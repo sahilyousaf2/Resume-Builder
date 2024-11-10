@@ -1,14 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import dynamic from 'next/dynamic';
+import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { Event } from '../types/types';
-
-const PDFDownloadLink = dynamic(
-  () => import('@react-pdf/renderer').then(mod => mod.PDFDownloadLink),
-  { ssr: false }
-);
-
 const CVBuilder = () => {
     const [loading] = useState(false);
     const [formData, setFormData] = useState({
@@ -76,7 +69,7 @@ const CVBuilder = () => {
                 <View style={styles.section}>
                     <Text style={styles.title}>{formData.name}</Text>
                     <Text style={styles.subtitle}>Personal Information</Text>
-                    <Text style={styles.text}>Father&apos;s Name: {formData.fatherName}</Text>
+                    <Text style={styles.text}>Father's Name: {formData.fatherName}</Text>
                     <Text style={styles.text}>Email: {formData.email}</Text>
                     <Text style={styles.text}>Phone: {formData.phone}</Text>
                     <Text style={styles.text}>CNIC: {formData.cnic}</Text>
@@ -136,11 +129,13 @@ const CVBuilder = () => {
             textDecoration: 'underline'
         },
         subtitle: {
+            // backgroundColor: '#f0e6e9',
             fontSize: '20px',
             fontWeight: 'bold',
             marginTop: '5px',
             marginBottom: '5px',
             color: 'black',
+            // borderRadius: '10px',
             borderBottom: '2px solid #8D6961',
             borderRight: '3px solid #2c3e50',
             padding: '3px'
@@ -151,6 +146,7 @@ const CVBuilder = () => {
             fontWeight: 'normal',
             paddingBottom: '3px',
             color: 'black',
+            // lineHeight: 1.5
         },
         list: {
             marginLeft: '5px'
@@ -444,4 +440,6 @@ const CVBuilder = () => {
     );
 };
 
-export default CVBuilder;
+export default CVBuilder;/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/no-unescaped-entities */
+<p>Don&apos;t forget to save</p>
