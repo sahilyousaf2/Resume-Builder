@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { Event } from '../types/types';
 const CVBuilder = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         fatherName: '',
@@ -137,6 +137,7 @@ const CVBuilder = () => {
             color: 'black',
             // borderRadius: '10px',
             borderBottom: '2px solid #8D6961',
+            borderRight: '3px solid #2c3e50',
             padding: '3px'
         },
         text: {
@@ -144,7 +145,7 @@ const CVBuilder = () => {
             paddingLeft: '3px',
             fontWeight: 'normal',
             paddingBottom: '3px',
-            color: '#4a5568',
+            color: 'black',
             // lineHeight: 1.5
         },
         list: {
@@ -173,7 +174,7 @@ const CVBuilder = () => {
                                 type="text"
                                 name="name"
                                 placeholder="Full Name"
-                                // value={}
+                                value={formData.name}
                                 onChange={handleInputChange}
                                 className="w-full px-4 text-[18px] py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-transparent transition duration-300"
                             />
@@ -440,3 +441,6 @@ const CVBuilder = () => {
 };
 
 export default CVBuilder;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/no-unescaped-entities */
+<p>Don&apos;t forget to save</p>
