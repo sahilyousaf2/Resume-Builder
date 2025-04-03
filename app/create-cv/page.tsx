@@ -62,50 +62,86 @@ const CVBuilder = () => {
         setFormData({ ...formData, experience: newExperience });
     };
 
-
     const CVDocument = () => (
         <Document>
             <Page size="A4" style={styles.page}>
-                <View style={styles.section}>
-                    <Text style={styles.title}>{formData.name}</Text>
-                    <Text style={styles.subtitle}>Personal Information</Text>
-                    <Text style={styles.text}>Father's Name: {formData.fatherName}</Text>
-                    <Text style={styles.text}>Email: {formData.email}</Text>
-                    <Text style={styles.text}>Phone: {formData.phone}</Text>
-                    <Text style={styles.text}>CNIC: {formData.cnic}</Text>
-                    <Text style={styles.text}>Gender: {formData.gender}</Text>
-                    <Text style={styles.text}>Address: {formData.address}</Text>
-                    <Text style={styles.text}>Marital Status: {formData.maritalStatus}</Text>
+                {/* Watermark */}
+                <View style={styles.watermark}>
+                    <Text style={styles.watermarkText}>CV</Text>
+                </View>
 
+                {/* Header */}
+                <View style={styles.header}>
+                    <Text style={styles.title}>{formData.name.toUpperCase() || 'YOUR NAME'}</Text>
+                    <View style={styles.headerLine}></View>
+                </View>
+
+                {/* Personal Info (2-Column Layout) */}
+                <View style={styles.sectionBox}>
+                    <Text style={styles.subtitle}>Personal Details</Text>
+                    <View style={styles.twoColumn}>
+                        <View style={styles.column}>
+                            <Text style={styles.text}><Text style={styles.label}>Name: </Text>{formData.name}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Father: </Text>{formData.fatherName}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Phone: </Text>{formData.phone}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Email: </Text>{formData.email}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Religion: </Text>{formData.religion}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>MaritalStatus: </Text>{formData.maritalStatus}</Text>
+                        </View>
+                        <View style={styles.column}>
+                            <Text style={styles.text}><Text style={styles.label}>CNIC: </Text>{formData.cnic}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>DOB: </Text>{formData.dob}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Gender: </Text>{formData.gender}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Address: </Text>{formData.address}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Nationality: </Text>{formData.nationality}</Text>
+                        </View>
+                    </View>
+                </View>
+
+                {/* Education */}
+                <View style={styles.sectionBox}>
                     <Text style={styles.subtitle}>Education</Text>
                     {formData.education.map((edu, index) => (
-                        <View key={index}>
-                            <Text style={styles.text}>Degree: {edu.degree}</Text>
-                            <Text style={styles.text}>Institute: {edu.institute}</Text>
-                            <Text style={styles.text}>Year: {edu.year}</Text>
+                        <View key={index} style={styles.item}>
+                            <Text style={styles.text}><Text style={styles.label}>Degree: </Text>{edu.degree}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Institute: </Text>{edu.institute}</Text>
+                            <Text style={styles.text}><Text style={styles.label}>Year: </Text>{edu.year}</Text>
+                            {index < formData.education.length - 1 && <View style={styles.divider}></View>}
                         </View>
                     ))}
+                </View>
 
+                {/* Skills (Tag Style) */}
+                <View style={styles.sectionBox}>
                     <Text style={styles.subtitle}>Skills</Text>
-                    <View style={styles.list}>
+                    <View style={styles.skillsContainer}>
                         {formData.skills.map((skill, index) => (
-                            <View key={index} style={styles.listItem}>
-                                <Text style={styles.bullet}>•</Text>
-                                <Text style={styles.text}>{skill.skill}</Text>
+                            <View key={index} style={styles.skillTag}>
+                                <Text style={styles.skillText}>{skill.skill}</Text>
                             </View>
                         ))}
                     </View>
+                </View>
 
-                    <Text style={styles.subtitle}>Experience</Text>
-                    {formData.experience.map((exp, index) => (
-                        <View key={index}>
-                            <Text style={styles.text}>Company: {exp.company}</Text>
-                            <Text style={styles.text}>Position: {exp.position}</Text>
-                            <Text style={styles.text}>Duration: {exp.duration}</Text>
-                        </View>
-                    ))}
-                    <Text style={styles.subtitle}>References </Text>
-                    <Text style={styles.text}>• Will be furnished upon request.</Text>
+                {/* Experience (Only if data exists) */}
+                {formData.experience.some(exp => exp.company || exp.position || exp.duration) && (
+                    <View style={styles.sectionBox}>
+                        <Text style={styles.subtitle}>Work Experience</Text>
+                        {formData.experience.map((exp, index) => (
+                            <View key={index} style={styles.item}>
+                                <Text style={styles.text}><Text style={styles.label}>Company: </Text>{exp.company}</Text>
+                                <Text style={styles.text}><Text style={styles.label}>Position: </Text>{exp.position}</Text>
+                                <Text style={styles.text}><Text style={styles.label}>Duration: </Text>{exp.duration}</Text>
+                                {index < formData.experience.length - 1 && <View style={styles.divider}></View>}
+                            </View>
+                        ))}
+                    </View>
+                )}
+
+                {/* References */}
+                <View style={styles.sectionBox}>
+                    <Text style={styles.subtitle}>References</Text>
+                    <Text style={styles.text}>Will be furnished upon request.</Text>
                 </View>
             </Page>
         </Document>
@@ -113,56 +149,117 @@ const CVBuilder = () => {
 
     const styles = StyleSheet.create({
         page: {
-            padding: '10px',
-            backgroundColor: '#fff'
+            padding: 20,
+            paddingBottom: 40,
+            backgroundColor: '#f9f9f9',
+            position: 'relative',
+            fontSize: 10,
+            fontFamily: 'Helvetica',
+            lineHeight: 1.4,
+            height: '100%'
+        },
+        watermark: {
+            position: 'absolute',
+            top: '30%',
+            left: 0,
+            right: 0,
+            textAlign: 'center',
+            opacity: 0.05,
+            transform: 'rotate(-45deg)'
+        },
+        watermarkText: {
+            fontSize: 180,
+            color: '#888',
+            fontWeight: 'bold'
         },
         section: {
-            margin: '0 0 0 10px',
-            maxWidth: '90%'
+            marginBottom: 10,
+            position: 'relative'
+        },
+        sectionBox: {
+            marginBottom: 10,
+            padding: 8,
+            borderLeft: '2px solid #3b82f6',
+            backgroundColor: '#fff',
+            borderRadius: 3,
+            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+            breakInside: 'avoid'
+        },
+        header: {
+            marginBottom: 10,
+            textAlign: 'center',
+            pageBreakAfter: 'avoid'
+        },
+        headerLine: {
+            height: 1,
+            backgroundColor: '#3b82f6',
+            margin: '5px auto',
+            width: '80%'
         },
         title: {
-            fontSize: '24px',
-            fontWeight: 'extrabold',
-            margin: '10px 0 0 0',
-            textAlign: 'center',
-            color: 'black',
-            textDecoration: 'underline'
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#1e3a8a',
+            textTransform: 'uppercase',
+            marginBottom: 5
         },
         subtitle: {
-            // backgroundColor: '#f0e6e9',
-            fontSize: '20px',
+            fontSize: 12,
             fontWeight: 'bold',
-            marginTop: '5px',
-            marginBottom: '5px',
-            color: 'black',
-            // borderRadius: '10px',
-            borderBottom: '2px solid #8D6961',
-            borderRight: '3px solid #2c3e50',
-            padding: '3px'
+            color: '#1e40af',
+            marginBottom: 5,
+            borderBottom: '1px solid #d1d5db',
+            paddingBottom: 2,
+            pageBreakAfter: 'avoid'
         },
         text: {
-            fontSize: '15px',
-            paddingLeft: '3px',
-            fontWeight: 'normal',
-            paddingBottom: '3px',
-            color: 'black',
-            // lineHeight: 1.5
+            fontSize: 10,
+            marginBottom: 3,
+            color: '#444'
         },
-        list: {
-            marginLeft: '5px'
+        label: {
+            fontWeight: 'bold',
+            color: '#111',
+            marginRight: 3
         },
-
-        listItem: {
+        twoColumn: {
             flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: '3px'
+            justifyContent: 'space-between',
+            marginTop: 5,
+            pageBreakInside: 'avoid'
         },
-        bullet: {
-            marginRight: '3px',
-            color: 'black'
+        column: {
+            width: '48%'
+        },
+        item: {
+            marginBottom: 8,
+            pageBreakInside: 'avoid'
+        },
+        divider: {
+            height: 0.5,
+            backgroundColor: '#e5e7eb',
+            marginVertical: 5
+        },
+        skillsContainer: {
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: 4,
+            marginTop: 4
+        },
+        skillTag: {
+            backgroundColor: '#dbeafe',
+            borderRadius: 8,
+            paddingHorizontal: 6,
+            paddingVertical: 2,
+            marginRight: 4,
+            marginBottom: 4
+        },
+        skillText: {
+            fontSize: 8,
+            color: '#1e40af'
         }
     });
-    
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 py-10 px-4 sm:px-6 lg:px-8 shadow-2xl">
             <div className="max-w-5xl mx-auto bg-gray-800/50 rounded-2xl shadow-xl p-8">
